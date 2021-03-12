@@ -1919,4 +1919,28 @@ router.get('/kuis/tebakgambar', async (req, res, next) => {
 })
 
 
+router.get('/ytplay', async (req, res, next) => {
+    var apikeyInput = req.query.apikey
+    var qplay = req.query.lagu
+
+    if (!apikeyInput) return res.json(loghandler.notparam)
+    if (apikeyInput != 'anwapikey270624') return res.json(loghandler.invalidKey)
+    if (!qplay) return res.json({
+        error: 400,
+        pesan: 'Baka!! masukkan lagu ?lagu=alone',
+    });
+    fetch(encodeURI(`https://ahmadxx.herokuapp.com/api/ytplay?lagu=${qplay}`))
+        .then(response => response.json())
+        .then(data => {
+            var result = data;
+            res.json({
+                result
+            })
+        })
+        .catch(e => {
+            res.json(loghandler.error)
+        })
+})
+
+
 module.exports = router
